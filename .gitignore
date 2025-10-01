@@ -1,0 +1,42 @@
+# PHP
+/backend/vendor/
+composer.lock
+
+# Database config (keep this private!)
+/backend/config/database.php
+
+# Uploads (don't commit user files)
+/backend/uploads/music/*
+/backend/uploads/artwork/*
+# But keep the folders
+!/backend/uploads/music/.gitkeep
+!/backend/uploads/artwork/.gitkeep
+
+# Environment files
+.env
+*.env
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Android (add when you create Android project)
+/android/MediaServerApp/.gradle/
+/android/MediaServerApp/local.properties
+/android/MediaServerApp/.idea/
+/android/MediaServerApp/build/
+/android/MediaServerApp/app/build/
+/android/MediaServerApp/*.iml
+/android/MediaServerApp/.DS_Store
+/android/MediaServerApp/captures/
+/android/MediaServerApp/.externalNativeBuild/
