@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test User Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        small {
+            color: #666;
+            font-size: 12px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .response h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #333;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Test User Registration</h1>
+        
+        <form id="registerForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <small>3-50 characters</small>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <small>Must be a valid email address</small>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <small>Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special character</small>
+            
+            <button type="submit">Register</button>
+        </form>
+        
+        <div id="responseContainer" style="display:none;" class="response">
+            <h3>Response:</h3>
+            <pre id="response"></pre>
+        </div>
+    </div>
+
+    <script>
+        // Get the form element
+        const form = document.getElementById('registerForm');
+        
+        // Add event listener for form submission
+        form.addEventListener('submit', async function(e) {
+            // Prevent default form submission (page reload)
+            e.preventDefault();
+            
+            // Get the form data
+            // FormData is a built-in JavaScript object that collects form field values
+            const formData = new FormData(this);
+            
+            // Show a loading message
+            const responseContainer = document.getElementById('responseContainer');
+            const responseElement = document.getElementById('response');
+            responseContainer.style.display = 'block';
+            responseContainer.className = 'response';
+            responseElement.textContent = 'Sending request...';
+            
+            try {
+                // Send POST request to the registration API
+                // fetch() is how we make HTTP requests in JavaScript
+                const response = await fetch('/media-server/backend/api/auth/register.php', {
+                    method: 'POST',  // Use POST method
+                    body: formData   // Send the form data
+                });
+                
+                // Parse the JSON response from the server
+                const data = await response.json();
+                
+                // Display the response in a nice format
+                // JSON.stringify() converts JavaScript object to readable text
+                // null, 2 means "pretty print with 2 spaces of indentation"
+                responseElement.textContent = JSON.stringify(data, null, 2);
+                
+                // Color code the response based on success/failure
+                if (data.success) {
+                    responseContainer.className = 'response success';
+                } else {
+                    responseContainer.className = 'response error';
+                }
+                
+            } catch (error) {
+                // If something went wrong (network error, etc.)
+                responseElement.textContent = 'Error: ' + error.message;
+                responseContainer.className = 'response error';
+            }
+        });
+    </script>
+</body>
+</html>
